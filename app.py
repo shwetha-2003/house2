@@ -11,21 +11,21 @@ from sklearn.metrics import mean_squared_error, r2_score
 #import the data
 data = pd.read_csv("Data Clean.csv")
 #image = Image.open("house.png")
-st.title("Aplikasi Prediksi Harga Rumah")
+st.title("House Price Prediction Application")
 #st.image(image, use_column_width=True)
 
 #cek data
-st.write("Aplikasi ini dibuat untuk memperkirakan rentang harga rumah yang akan dibeli oleh konsumen")
-check_data = st.checkbox("Lihat data yang ada")
+st.write("This application was created to estimate the price range of houses that consumers will buy")
+check_data = st.checkbox("Look at existing data")
 if check_data:
     st.write(data.head(4312))
-st.subheader("Ayo mulai prediksi harga rumah impianmu!")
+st.subheader("Let's start predicting the price of your dream home!")
 
 #input angka
-sqft_liv = st.slider("Berapa ukuran ruang tamu yang kamu inginkan (ft2) ?",int(data.sqft_living.min()),int(data.sqft_living.max()),int(data.sqft_living.mean()) )
-bath     = st.slider("Berapa banyak kamar mandi?",int(data.bathrooms.min()),int(data.bathrooms.max()),int(data.bathrooms.mean()) )
-bed      = st.slider("Berapa banyak kamar tidur?",int(data.bedrooms.min()),int(data.bedrooms.max()),int(data.bedrooms.mean()) )
-floor    = st.slider("Berapa lantai rumah yang kamu inginkan?",int(data.floors.min()),int(data.floors.max()),int(data.floors.mean()) )
+sqft_liv = st.slider("What size living room do you want (ft2) ?",int(data.sqft_living.min()),int(data.sqft_living.max()),int(data.sqft_living.mean()) )
+bath     = st.slider("How many bathrooms?",int(data.bathrooms.min()),int(data.bathrooms.max()),int(data.bathrooms.mean()) )
+bed      = st.slider("How many bedrooms?",int(data.bedrooms.min()),int(data.bedrooms.max()),int(data.bedrooms.mean()) )
+floor    = st.slider("How many floors of the house do you want?",int(data.floors.min()),int(data.floors.max()),int(data.floors.mean()) )
 
 #split data
 X = data.drop('price', axis = 1)
@@ -42,7 +42,7 @@ errors = np.sqrt(mean_squared_error(y_test,model.predict(X_test)))
 predictions = model.predict([[sqft_liv,bath,bed,floor]])[0]
 
 #cek prediksi harga rumah
-if st.button("Jalankan!"):
-    st.header("Prediksi harga rumah impianmu = {} $".format(int(predictions)))
-    st.subheader("Range harga rumahmu = {} $ - {} $".format(int(predictions-errors),int(predictions+errors)))
+if st.button("Run!"):
+    st.header("Predict the price of your dream home = {} $".format(int(predictions)))
+    st.subheader("Your home price range = {} $ - {} $".format(int(predictions-errors),int(predictions+errors)))
     
